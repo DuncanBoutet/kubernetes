@@ -20,7 +20,10 @@ spec:
         - name: PGADMIN_DEFAULT_EMAIL
           value: admin@admin.com
         - name: PGADMIN_DEFAULT_PASSWORD
-          value: root
+          valueFrom: 
+            secretKeyRef:
+              name: secrets-postgre-creds
+              key: pga-password
         ports:
         - containerPort: 80
 ---
@@ -36,3 +39,4 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 80
+  type: NodePort
