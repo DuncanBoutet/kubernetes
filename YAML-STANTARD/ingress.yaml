@@ -22,10 +22,3 @@ spec:
               name: fastapi-service
               port:
                 number: 80
-        - path: /pgadmin
-          pathType: Prefix
-          backend:
-             service:
-              name: pgadmin-service
-              port:
-                number: 8080
