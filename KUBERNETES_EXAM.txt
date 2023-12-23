@@ -1,0 +1,25 @@
+KUBERNETES EXAM
+
+construction de l'image
+docker build -t boudun/fastapi .
+docker login -u boudun
+docker push boudun/fastapi
+
+
+3 Objet principaux :
+- BDD StateFullSet
+- AdminBdd Deployments
+- FastAPI Deployments
+
+
+création d'un secrets pour le mdp de BDD:
+echo -n 'password' | base64   => cGFzc3dvcmQ=
+
+
+kubectl apply -f namespace.yaml
+kubectl apply -f pvc.yaml
+kubectl apply -f secrets.yaml
+kubectl apply -f bdd.yaml
+kubectl apply -f pgadmin.yaml
+kubectl apply -f fastapi.yaml
+kubectl apply -f hpa.yaml

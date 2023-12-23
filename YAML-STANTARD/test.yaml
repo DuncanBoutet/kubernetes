@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mon-statefulset
+spec:
+  serviceName: "mon-service"
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mon-app
+  template:
+    metadata:
+      labels:
+        app: mon-app
+    spec:
+      containers:
+      - name: mon-container
+        image: mon-image:tag
+        volumeMounts:
+        - name: mon-volume
+          mountPath: /chemin/dans/le/conteneur
+  volumeClaimTemplates:
+  - metadata:
+      name: mon-volume
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
