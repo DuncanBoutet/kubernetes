@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.fastapi.name}}-deployment
+  namespace: {{.Values.namespace.name}}
+spec:
+  replicas: {{.Values.fastapi.replicat}}
+  selector:
+    matchLabels:
+      app: {{.Values.fastapi.name}}
+  template:
+    metadata:
+      labels:
+        app: {{.Values.fastapi.name}}
+    spec:
+      containers:
+        - name: {{.Values.fastapi.name}}
+          image: {{.Values.fastapi.image.repository}}}:{{.Values.fastapi.image.tag}}}
+          ports:
+            - containerPort: {{.Values.fastapi.service.port}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Values.fastapi.name}}-service
+  namespace: {{.Values.namespace.name}}
+spec:
+  selector:
+    app: {{.Values.fastapi.name}}
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: {{.Values.fastapi.service.port}}

@@ -1,0 +1,49 @@
+replicaCount: 1
+namespace:
+  name: "helm"
+storage:
+  name: "exam-kub-pvc"
+  spec:
+    accessModes: ReadWriteMany
+    size: 10Gi
+secrets:
+  name: "secrets-postgre-creds"
+  type: Opaque
+bdd:
+  name: "db"
+  image:
+    repository: "postgres"
+    tag: "12.0-alpine"
+    pullPolicy: IfNotPresent
+  service:
+    port: 5432
+fastapi:
+  name: "fastapi"
+  replicat: 3
+  image:
+    repository: "boudun/fastapi"
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  service:
+    port: 5000
+pgadmin:
+  name: "pgadmin"
+  image:
+    repository: "dpage/pgadmin4"
+    pullPolicy: IfNotPresent
+  service:
+    type: NodePort
+    port: 8080
+hpa:
+  name: "hpa"
+  spec:
+    minReplicat: 3
+    maxReplicat: 6
+    targetCPUUtilizationPercentage: 70
+clusterissuer:
+  name: "letsencrypt-prod"
+  server: https://acme-v02.api.letsencrypt.org/directory
+  email: duncan.boutet@gmail.com
+ingress:
+  name: "fastapingress"
+  url: "exam.kub.boudun.cloudns.ph"

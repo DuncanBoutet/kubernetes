@@ -1,0 +1,13 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+ name: {{.Values.hpa.name}}-fastapi
+ namespace: {{.Values.namespace.name}}
+spec:
+ scaleTargetRef:
+   apiVersion: apps/v1
+   kind: Deployment
+   name: {{.Values.fastapi.name}}-deployment
+ minReplicas: {{.Values.hpa.spec.minReplicat}}
+ maxReplicas: {{.Values.hpa.spec.maxReplicat}}
+ targetCPUUtilizationPercentage: {{.Values.hpa.spec.targetCPUUtilizationPercentage}}

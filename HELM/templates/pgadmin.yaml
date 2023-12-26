@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.pgadmin.name}}-deployment
+  namespace: {{.Values.namespace.name}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{.Values.pgadmin.name}}
+  template:
+    metadata:
+      labels:
+        app: {{.Values.pgadmin.name}}
+    spec:
+      containers:
+      - name: {{.Values.pgadmin.name}}
+        image: {{.Values.pgadmin.image.repository}}
+        env:
+        - name: PGADMIN_DEFAULT_EMAIL
+          value: admin@admin.com
+        - name: PGADMIN_DEFAULT_PASSWORD
+          valueFrom: 
+            secretKeyRef:
+              name: {{.Values.secrets.name}}
+              key: pga-password
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Values.pgadmin.name}}-service
+  namespace: {{.Values.namespace.name}}
+spec:
+  selector:
+    app: {{.Values.pgadmin.name}}
+  ports:
+    - protocol: TCP
+      port: {{.Values.pgadmin.service.port}}
+      targetPort: 80
+  type: {{.Values.pgadmin.service.type}}
