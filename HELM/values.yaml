@@ -4,7 +4,7 @@ namespace:
 storage:
   name: "exam-kub-pvc"
   spec:
-    accessModes: ReadWriteMany
+    accessModes: ReadWriteOnce
     size: 10Gi
 secrets:
   name: "secrets-postgre-creds"
