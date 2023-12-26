@@ -5,8 +5,7 @@ metadata:
   namespace: standard
 spec:
   accessModes:
-    - ReadWriteMany
-  storageClassName: local-path
+    - ReadWriteOnce
   resources:
     requests:
       storage: 10Gi

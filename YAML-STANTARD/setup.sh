@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 kubectl apply -f namespace.yaml
-kubectl apply -f pvc.yaml
+kubectl apply -f storage.yaml
 kubectl apply -f secrets.yaml
 kubectl apply -f bdd.yaml
 kubectl apply -f pgadmin.yaml
