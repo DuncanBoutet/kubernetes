@@ -6,7 +6,6 @@ metadata:
 spec:
   accessModes:
     - {{.Values.storage.spec.accessModes}}
-  storageClassName: local-path
   resources:
     requests:
       storage: {{.Values.storage.spec.size}}
