@@ -15,6 +15,6 @@ kubectl apply -f fastapi.yaml
 echo "Création de l'auto scaling, avec un réglage mini 3 pods, max 6 pods, limit 70% cpu"
 kubectl apply -f hpa.yaml
 echo "Création de l'issuer de certificat"
-kubectl apply -f clusterissuer.yaml
+kubectl create -f clusterissuer.yaml
 echo "Création de l'ingress, afin de rendre notre application disponible sur le DNS"
 kubectl apply -f ingress.yaml
