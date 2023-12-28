@@ -6,8 +6,8 @@ namespace: kustomize
 secretGenerator:
   - name: secrets-postgre-creds
     literals:
-      - pgs-password="cGFzc3dvcmQ="
-      - pga-password="cm9vdA=="
+      - pgs-password=password
+      - pga-password=root
 
 resources:
   - namespace.yaml
