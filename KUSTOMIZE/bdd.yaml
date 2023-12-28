@@ -1,53 +1,52 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{.Values.bdd.name}}-statefulset
-  namespace: {{.Values.namespace.name}}
+  name: db-statefulset
 spec:
-  serviceName: "{{.Values.bdd.name}}-service"
+  serviceName: "db-service"
   replicas: 1
   selector:
     matchLabels:
-      app: {{.Values.bdd.name}}
+      app: db
   template:
     metadata:
       labels:
-        app: {{.Values.bdd.name}}
+        app: db
     spec:
       containers:
-      - name: {{.Values.bdd.name}}
-        image: {{.Values.bdd.image.repository}}:{{.Values.bdd.image.tag}}
+      - name: db
+        image: postgres:12.0-alpine
         env:
         - name: POSTGRES_USER
           value: admin
         - name: POSTGRES_PASSWORD
           valueFrom: 
             secretKeyRef:
-              name: {{.Values.secrets.name}}
+              name: secrets-postgre-creds
               key: pgs-password
         - name: POSTGRES_DB
           value: storedb
         - name: POSTGRES_HOST_AUTH_METHOD
           value: trust
         ports:
-        - containerPort: {{.Values.bdd.service.port}}
+        - containerPort: 5432
         volumeMounts:
         - name: postgres-data
           mountPath: /var/lib/postgresql/data
       volumes:
       - name: postgres-data
         persistentVolumeClaim:
-          claimName: {{.Values.storage.name}}
+          claimName: exam-kub-pvc
 ---          
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{.Values.bdd.name}}
-  namespace: {{.Values.namespace.name}}
+  name: db
+  namespace: standard
 spec:
   selector:
-    app: {{.Values.bdd.name}}
+    app: db
   ports:
     - protocol: TCP
-      port: {{.Values.bdd.service.port}}
-      targetPort: {{.Values.bdd.service.port}}
+      port: 5432
+      targetPort: 5432

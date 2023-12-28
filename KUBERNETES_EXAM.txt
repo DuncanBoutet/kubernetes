@@ -1,25 +1,53 @@
-KUBERNETES EXAM
+EXAMEN KUBERNETES
 
-construction de l'image
+Prérequis :
+
+Nous devons créer l'image fastapi pour pouvoir l'utiliser.
+Récupération du dépôt :
+git clone https://github.com/DataScientest/kubernetes-devops-project.git
+cd kubernetes-devops-project
+Construction de l'image :
 docker build -t boudun/fastapi .
+Téléchargement de l'image sur notre Docker Hub :
 docker login -u boudun
 docker push boudun/fastapi
 
+Nous aurons aussi besoin de cert-manager si celui-ci n'est pas déjà installé :
+Créons les services via le yaml hébergé sur GitHub :
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.yaml
+Vérifions que le service tourne bien :
+kubectl cert-manager check api
 
-3 Objet principaux :
-- BDD StateFullSet
-- AdminBdd Deployments
-- FastAPI Deployments
-
-
-création d'un secrets pour le mdp de BDD:
+Nous devons aussi avoir les versions encodées en base64 de nos mots de passe :
+Création d'un secret pour le mot de passe de la BDD :
 echo -n 'password' | base64   => cGFzc3dvcmQ=
+Création d'un secret pour le mot de passe de pgadmin :
+echo -n 'root' | base64   => cm9vdA==
 
+Définition des objets nécessaires :
 
-kubectl apply -f namespace.yaml
-kubectl apply -f pvc.yaml
-kubectl apply -f secrets.yaml
-kubectl apply -f bdd.yaml
-kubectl apply -f pgadmin.yaml
-kubectl apply -f fastapi.yaml
-kubectl apply -f hpa.yaml
+3 Objets principaux :
+- StatefulSet BDD
+- Déploiement AdminBdd
+- Déploiement FastAPI
+
+Les 3 StatefulSet seront exposés au réseau par des services.
+AdminBdd sera particulièrement exposé par un service de type NodePort afin de pouvoir y accéder depuis la machine hôte.
+
+Nous aurons aussi besoin de :
+- secrets pour conserver les mots de passe
+- scaleur horizontal pour répondre à la charge des appels
+- PVC pour un stockage persistant pour notre BDD
+
+Enfin, le service fastapi sera exposé sur notre DNS à l'aide d'un ingress.
+
+STANDARD-YAML :
+J'ai créé un petit script setup.sh qui va lancer dans l'ordre les différents YAML nécessaires.
+J'aurais aussi pu tout mettre dans le même YAML, mais je trouve cela plus lisible ainsi.
+J'ai aussi fait un petit script remove.sh pour retirer tout ce qui a été installé via le setup, très pratique pour ne pas avoir à réinitialiser k8s.
+
+HELM :
+Je suis reparti de ce qui avait été fait pour le STANDARD-YAML, en essayant de regrouper ce qui pouvait être variabilisé dans le values.yaml.
+
+KUSTOMIZE :
+Je suis reparti de ce qui avait été fait pour le STANDARD-YAML, j'ai un peu séché sur ce que je devais faire à ce niveau, j'ai donc fait le minimum en renseignant le namespace à ce niveau et en remplaçant le secrets.yaml par un secretGenerator, pas un grand fan de cette solution vu que les identifiants se retrouvent en clair.
