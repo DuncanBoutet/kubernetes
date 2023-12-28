@@ -41,9 +41,9 @@ hpa:
     maxReplicat: 6
     targetCPUUtilizationPercentage: 70
 clusterissuer:
-  name: "letsencrypt-prod"
+  name: "letsencrypt-prod-helm"
   server: https://acme-v02.api.letsencrypt.org/directory
   email: duncan.boutet@gmail.com
 ingress:
   name: "fastapingress"
-  url: "exam.kub.boudun.cloudns.ph"
+  url: "helm.boudun.cloudns.ph"

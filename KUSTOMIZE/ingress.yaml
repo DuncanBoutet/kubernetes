@@ -3,15 +3,15 @@ kind: Ingress
 metadata:
   name: fastapi-ingress
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: letsencrypt-prod-kus
 spec:
   ingressClassName: traefik
   tls:
     - secretName: rancher-secret
       hosts:
-        - exam.kub.boudun.cloudns.ph
+        - kustomize.boudun.cloudns.ph
   rules:
-  - host: exam.kub.boudun.cloudns.ph
+  - host: kustomize.boudun.cloudns.ph
     http:
       paths:
         - path: /
