@@ -10,6 +10,7 @@ secretGenerator:
       - pga-password="cm9vdA=="
 
 resources:
+  - namespace.yaml
   - storage.yaml
   - bdd.yaml
   - pgadmin.yaml
