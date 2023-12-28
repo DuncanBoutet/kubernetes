@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: {{.Values.fastapi.name}}
-          image: {{.Values.fastapi.image.repository}}}:{{.Values.fastapi.image.tag}}}
+          image: {{.Values.fastapi.image.repository}}:{{.Values.fastapi.image.tag}}
           ports:
             - containerPort: {{.Values.fastapi.service.port}}
 ---

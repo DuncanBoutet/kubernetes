@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: {{.Values.bdd.name}}
-        image: {{.Values.bdd.image.repository}}}:{{.Values.bdd.image.tag}}}
+        image: {{.Values.bdd.image.repository}}:{{.Values.bdd.image.tag}}
         env:
         - name: POSTGRES_USER
           value: admin
